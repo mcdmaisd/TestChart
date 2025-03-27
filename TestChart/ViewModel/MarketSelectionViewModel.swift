@@ -1,15 +1,15 @@
-//
-//  MarketSelectionViewModel.swift
-//  TestChart
-//
-//  Created by ilim on 2025-03-27.
-//
-
 import Foundation
 import RxSwift
 import RxCocoa
+import OSLog
 
 class MarketSelectionViewModel {
+    // 전용 로거 생성
+    private let logger = Logger(
+        subsystem: Bundle.main.bundleIdentifier ?? "com.default.cryptoapp",
+        category: "MarketSelectionViewModel"
+    )
+    
     // MARK: - Properties
     
     // Output
@@ -17,11 +17,19 @@ class MarketSelectionViewModel {
     let isLoading = BehaviorRelay<Bool>(value: false)
     let errorMessage = PublishRelay<String>()
     
+    // 내부 상태 및 의존성 관리
     private let disposeBag = DisposeBag()
+    private let webSocketService: UpbitWebSocketService
     
     // MARK: - Initialization
-    init() {
-        // 기본 마켓 정보 설정
+    init(webSocketService: UpbitWebSocketService = UpbitWebSocketService()) {
+        logger.debug("MarketSelectionViewModel 초기화")
+        self.webSocketService = webSocketService
+        setupInitialMarkets()
+    }
+    
+    // MARK: - Initial Market Setup
+    private func setupInitialMarkets() {
         let defaultMarkets = [
             MarketInfo(market: "KRW-BTC", koreanName: "비트코인", englishName: "Bitcoin"),
             MarketInfo(market: "KRW-ETH", koreanName: "이더리움", englishName: "Ethereum"),
@@ -31,16 +39,17 @@ class MarketSelectionViewModel {
         ]
         
         availableMarkets.accept(defaultMarkets)
+        logger.debug("기본 마켓 \(defaultMarkets.count)개 로드")
     }
     
-    // MARK: - Public Methods
+    // MARK: - Market Loading
     func loadMarkets() {
+        logger.debug("마켓 정보 로드 시작")
+        
+        // 로딩 상태 업데이트
         isLoading.accept(true)
         
         // 웹소켓 서비스 인스턴스 생성
-        let webSocketService = UpbitWebSocketService()
-        
-        // 마켓 정보 요청 메시지 구성
         let requestId = UUID().uuidString
         let requestMessage: [String: Any] = [
             "request_id": requestId,
@@ -48,9 +57,10 @@ class MarketSelectionViewModel {
             "is_details": true
         ]
         
-        // 요청 메시지를 JSON 문자열로 변환
+        // 요청 메시지 JSON 변환
         guard let jsonData = try? JSONSerialization.data(withJSONObject: requestMessage),
               let jsonString = String(data: jsonData, encoding: .utf8) else {
+            logger.error("마켓 정보 요청 메시지 생성 실패")
             errorMessage.accept("요청 메시지 생성 실패")
             isLoading.accept(false)
             return
@@ -59,10 +69,9 @@ class MarketSelectionViewModel {
         // 웹소켓 연결
         webSocketService.connect()
         
-        // 응답 처리를 위한 일회성 구독 설정
+        // 응답 처리를 위한 일회성 구독
         let disposable = webSocketService.messageSubject
             .filter { message in
-                // 응답 메시지에서 request_id 확인
                 guard let data = message.data(using: .utf8),
                       let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
                       let responseId = json["request_id"] as? String,
@@ -73,15 +82,16 @@ class MarketSelectionViewModel {
                 }
                 return true
             }
-            .take(1) // 첫 번째 일치하는 응답만 처리
+            .take(1)
             .subscribe(onNext: { [weak self] message in
                 guard let self = self,
                       let data = message.data(using: .utf8) else {
+                    self?.logger.error("마켓 데이터 수신 실패")
                     return
                 }
                 
                 do {
-                    // 응답 JSON에서 마켓 데이터 추출
+                    // 마켓 데이터 추출
                     guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
                           let marketsData = json["data"] as? [[String: Any]] else {
                         throw NSError(domain: "ParsingError", code: 1, userInfo: [NSLocalizedDescriptionKey: "마켓 데이터 추출 실패"])
@@ -109,12 +119,16 @@ class MarketSelectionViewModel {
                     // KRW 마켓만 필터링
                     let krwMarkets = marketInfoArray.filter { $0.market.hasPrefix("KRW-") }
                     
+                    logger.debug("총 \(krwMarkets.count)개의 KRW 마켓 로드")
+                    
                     DispatchQueue.main.async {
                         self.availableMarkets.accept(krwMarkets)
                         self.isLoading.accept(false)
                     }
                     
                 } catch {
+                    logger.error("마켓 정보 파싱 실패: \(error.localizedDescription)")
+                    
                     DispatchQueue.main.async {
                         self.errorMessage.accept("마켓 정보 파싱 실패: \(error.localizedDescription)")
                         self.isLoading.accept(false)
@@ -122,24 +136,27 @@ class MarketSelectionViewModel {
                 }
                 
                 // 작업 완료 후 웹소켓 연결 종료
-                webSocketService.disconnect()
+                self.webSocketService.disconnect()
                 
             }, onError: { [weak self] error in
+                self?.logger.error("마켓 정보 로드 오류: \(error.localizedDescription)")
+                
                 DispatchQueue.main.async {
                     self?.errorMessage.accept("마켓 정보 로드 오류: \(error.localizedDescription)")
                     self?.isLoading.accept(false)
                 }
                 
                 // 오류 발생 시 웹소켓 연결 종료
-                webSocketService.disconnect()
+                self?.webSocketService.disconnect()
             })
         
-        // 요청 전송 후 일정 시간 후에 타임아웃 처리
+        // 타임아웃 처리
         let timeoutDisposable = Observable<Int>.timer(.seconds(10), scheduler: MainScheduler.instance)
             .subscribe(onNext: { [weak self] _ in
+                self?.logger.error("마켓 정보 로드 타임아웃")
                 self?.errorMessage.accept("마켓 정보 로드 타임아웃")
                 self?.isLoading.accept(false)
-                webSocketService.disconnect()
+                self?.webSocketService.disconnect()
                 disposable.dispose()
             })
         
@@ -152,10 +169,13 @@ class MarketSelectionViewModel {
         timeoutDisposable.disposed(by: tempDisposeBag)
     }
     
+    // MARK: - Utility Methods
     func getMarketDisplayName(_ market: String) -> String {
         if let marketInfo = availableMarkets.value.first(where: { $0.market == market }) {
+            logger.debug("마켓 \(market) 디스플레이 이름 반환")
             return "\(marketInfo.koreanName) (\(market))"
         }
+        logger.debug("마켓 \(market)에 대한 디스플레이 이름 없음")
         return market
     }
 }
