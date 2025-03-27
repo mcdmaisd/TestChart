@@ -6,6 +6,14 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		4F82DD852D954D08006AFB87 /* LightweightCharts in Frameworks */ = {isa = PBXBuildFile; productRef = 4F82DD842D954D08006AFB87 /* LightweightCharts */; };
+		4F82DD882D954D0F006AFB87 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = 4F82DD872D954D0F006AFB87 /* Starscream */; };
+		4F82DD8B2D954D1D006AFB87 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 4F82DD8A2D954D1D006AFB87 /* RxCocoa */; };
+		4F82DD8D2D954D1D006AFB87 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4F82DD8C2D954D1D006AFB87 /* RxSwift */; };
+		4F82DD902D954D28006AFB87 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F82DD8F2D954D28006AFB87 /* SnapKit */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		4F82DD5C2D954763006AFB87 /* TestChart.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestChart.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +44,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F82DD8B2D954D1D006AFB87 /* RxCocoa in Frameworks */,
+				4F82DD852D954D08006AFB87 /* LightweightCharts in Frameworks */,
+				4F82DD8D2D954D1D006AFB87 /* RxSwift in Frameworks */,
+				4F82DD882D954D0F006AFB87 /* Starscream in Frameworks */,
+				4F82DD902D954D28006AFB87 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +91,11 @@
 			);
 			name = TestChart;
 			packageProductDependencies = (
+				4F82DD842D954D08006AFB87 /* LightweightCharts */,
+				4F82DD872D954D0F006AFB87 /* Starscream */,
+				4F82DD8A2D954D1D006AFB87 /* RxCocoa */,
+				4F82DD8C2D954D1D006AFB87 /* RxSwift */,
+				4F82DD8F2D954D28006AFB87 /* SnapKit */,
 			);
 			productName = TestChart;
 			productReference = 4F82DD5C2D954763006AFB87 /* TestChart.app */;
@@ -107,6 +125,12 @@
 			);
 			mainGroup = 4F82DD532D954763006AFB87;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				4F82DD832D954D08006AFB87 /* XCRemoteSwiftPackageReference "LightweightChartsIOS" */,
+				4F82DD862D954D0F006AFB87 /* XCRemoteSwiftPackageReference "Starscream" */,
+				4F82DD892D954D1D006AFB87 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				4F82DD8E2D954D28006AFB87 /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4F82DD5D2D954763006AFB87 /* Products */;
 			projectDirPath = "";
@@ -150,9 +174,8 @@
 				INFOPLIST_FILE = TestChart/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -160,9 +183,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ilim.TestChart;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -178,9 +205,8 @@
 				INFOPLIST_FILE = TestChart/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -188,9 +214,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ilim.TestChart;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -335,6 +365,69 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4F82DD832D954D08006AFB87 /* XCRemoteSwiftPackageReference "LightweightChartsIOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/tradingview/LightweightChartsIOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
+		4F82DD862D954D0F006AFB87 /* XCRemoteSwiftPackageReference "Starscream" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/daltoniam/Starscream.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.8;
+			};
+		};
+		4F82DD892D954D1D006AFB87 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.9.0;
+			};
+		};
+		4F82DD8E2D954D28006AFB87 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4F82DD842D954D08006AFB87 /* LightweightCharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F82DD832D954D08006AFB87 /* XCRemoteSwiftPackageReference "LightweightChartsIOS" */;
+			productName = LightweightCharts;
+		};
+		4F82DD872D954D0F006AFB87 /* Starscream */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F82DD862D954D0F006AFB87 /* XCRemoteSwiftPackageReference "Starscream" */;
+			productName = Starscream;
+		};
+		4F82DD8A2D954D1D006AFB87 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F82DD892D954D1D006AFB87 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		4F82DD8C2D954D1D006AFB87 /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F82DD892D954D1D006AFB87 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
+		};
+		4F82DD8F2D954D28006AFB87 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F82DD8E2D954D28006AFB87 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4F82DD542D954763006AFB87 /* Project object */;
 }
